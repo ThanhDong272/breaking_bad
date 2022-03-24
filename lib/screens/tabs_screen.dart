@@ -22,13 +22,13 @@ class _TabsScreenState extends State<TabsScreen> {
         'page': QuotesScreen(),
         'title': 'Quotes',
       },
+            {
+        'page': CharactersScreen(),
+        'title': 'Characters',
+      },
       {
         'page': DeathsScreen(),
         'title': 'Deaths',
-      },
-      {
-        'page': CharactersScreen(),
-        'title': 'Characters',
       },
     ];
 
@@ -59,7 +59,14 @@ class _TabsScreenState extends State<TabsScreen> {
           ),
         ),
       ),
-      body: _pages[_selectedPageIndex]['page'] as Widget,
+      body: IndexedStack(
+        index: _selectedPageIndex,
+        children: [
+          QuotesScreen(),
+          CharactersScreen(),
+          DeathsScreen(),
+        ],
+      ),
       bottomNavigationBar: BottomNavigationBar(
         onTap: _selectPage,
         backgroundColor: Theme.of(context).colorScheme.primary,

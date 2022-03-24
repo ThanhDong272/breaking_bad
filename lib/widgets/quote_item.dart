@@ -26,9 +26,21 @@ class QuoteItem extends StatelessWidget {
       ],
     );
 
-    showDialog(
+    showGeneralDialog(
       context: context,
-      builder: (BuildContext context) {
+      transitionBuilder: (context, a1, a2, widget) {
+        return Transform.scale(
+          scale: a1.value,
+          child: Opacity(
+            opacity: a1.value,
+            child: widget,
+          ),
+        );
+      },
+      transitionDuration: Duration(milliseconds: 400),
+      barrierDismissible: true,
+      barrierLabel: '',
+      pageBuilder: (context, animation1, animation2) {
         return alert;
       },
     );
@@ -40,36 +52,32 @@ class QuoteItem extends StatelessWidget {
       onTap: () => _showSelectedQuote(context),
       borderRadius: BorderRadius.circular(8),
       child: Card(
-        child: Container(
-          child: Column(
-            children: [
-              Container(
-                child: Text(
-                  author,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
+        child: Column(
+          children: [
+            Container(
+              child: Text(
+                author,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
                 ),
-                padding: const EdgeInsets.only(top: 4),
+                textAlign: TextAlign.center,
               ),
-              Container(
-                child: Text(
-                  quote.length > 80 ? '${quote.substring(0, 80)}...' : quote,
-                  textAlign: TextAlign.center,
-                ),
-                padding: const EdgeInsets.only(top: 4, right: 2, left: 2),
+              padding: const EdgeInsets.only(top: 8),
+            ),
+            Container(
+              child: Text(
+                quote.length > 80 ? '${quote.substring(0, 80)}...' : quote,
+                textAlign: TextAlign.center,
               ),
-            ],
-          ),
-          padding: const EdgeInsets.all(4),
+              padding: const EdgeInsets.all(4),
+            ),
+          ],
         ),
         elevation: 8,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
         ),
-        margin: const EdgeInsets.all(8),
       ),
     );
   }

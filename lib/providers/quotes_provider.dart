@@ -34,4 +34,9 @@ class QuotesProvider with ChangeNotifier {
       throw error;
     }
   }
+
+  void clearQuotes() {
+    _items = [];
+    notifyListeners();
+  }
 }

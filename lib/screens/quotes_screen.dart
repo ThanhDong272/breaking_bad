@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -33,6 +36,14 @@ class _QuotesScreenState extends State<QuotesScreen> {
     super.didChangeDependencies();
   }
 
+  Future<void> _refreshQuotes(BuildContext context) async {
+    final quoteProvider = Provider.of<QuotesProvider>(context, listen: false);
+
+    quoteProvider.clearQuotes();
+
+    await quoteProvider.fetchQuotes();
+  }
+
   @override
   Widget build(BuildContext context) {
     return _isLoading
@@ -41,6 +52,9 @@ class _QuotesScreenState extends State<QuotesScreen> {
               color: Colors.orange,
             ),
           )
-        : QuoteGrid();
+        : RefreshIndicator(
+            onRefresh: () => _refreshQuotes(context),
+            child: QuoteGrid(),
+          );
   }
 }
