@@ -19,16 +19,16 @@ class QuotesProvider with ChangeNotifier {
 
     try {
       final response = await http.get(url);
-      final quotedData = <Quote>[];
+      final quoteData = <Quote>[];
 
       if (response.statusCode == 200) {
         final quotes = jsonDecode(response.body);
         for (var quote in quotes) {
-          quotedData.add(Quote.fromJson(quote));
+          quoteData.add(Quote.fromJson(quote));
         }
       }
 
-      _items = quotedData;
+      _items = quoteData;
       notifyListeners();
     } catch (error) {
       throw error;
