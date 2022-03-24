@@ -14,8 +14,8 @@ class QuoteGrid extends StatelessWidget {
     final quotes = quotesData.items;
 
     return GridView(
-      padding: EdgeInsets.all(16),
-      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+      padding: const EdgeInsets.all(16),
+      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
         maxCrossAxisExtent: 200,
         childAspectRatio: 1.3,
         crossAxisSpacing: 20,
