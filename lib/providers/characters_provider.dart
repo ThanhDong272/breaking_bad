@@ -34,4 +34,9 @@ class CharactersProvider with ChangeNotifier {
       throw error;
     }
   }
+
+  void clearCharacters() {
+    _characterItems = [];
+    notifyListeners();
+  }
 }

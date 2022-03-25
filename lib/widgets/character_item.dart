@@ -23,7 +23,7 @@ class CharacterItem extends StatelessWidget {
 
   void _selectCharacter(BuildContext context) {
     Navigator.of(context).pushNamed(
-      DetailCharacter.routeName,
+      DetailCharacterScreen.routeName,
       arguments: {
         'id': charId,
         'name': name,
@@ -52,7 +52,7 @@ class CharacterItem extends StatelessWidget {
             backgroundColor: Colors.white54,
             title: Text(
               name,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
                 fontSize: 14,
