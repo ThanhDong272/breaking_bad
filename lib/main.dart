@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
         ),
         home: TabsScreen(),
         routes: {
-          DetailCharacter.routeName: (ctx) => DetailCharacter(),
+          DetailCharacterScreen.routeName: (ctx) => DetailCharacterScreen(),
         },
       ),
     );
