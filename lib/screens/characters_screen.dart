@@ -33,6 +33,15 @@ class _CharactersScreenState extends State<CharactersScreen> {
     super.didChangeDependencies();
   }
 
+  Future<void> _refreshCharacters(BuildContext context) async {
+    final characterProvider =
+        Provider.of<CharactersProvider>(context, listen: false);
+
+    characterProvider.clearCharacters();
+
+    await characterProvider.fetchCharacters();
+  }
+
   @override
   Widget build(BuildContext context) {
     return _isLoading
@@ -41,6 +50,9 @@ class _CharactersScreenState extends State<CharactersScreen> {
               color: Colors.orange,
             ),
           )
-        : CharacterGrid();
+        : RefreshIndicator(
+            onRefresh: () => _refreshCharacters(context),
+            child: CharacterGrid(),
+          );
   }
 }
