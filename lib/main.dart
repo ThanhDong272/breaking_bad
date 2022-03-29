@@ -6,6 +6,7 @@ import './screens/detail_character_screen.dart';
 
 import './providers/quotes_provider.dart';
 import './providers/characters_provider.dart';
+import './providers/deaths_provider.dart';
 
 void main() => runApp(const MyApp());
 
@@ -21,6 +22,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (ctx) => CharactersProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (ctx) => DeathsProvider(),
         ),
       ],
       child: MaterialApp(
