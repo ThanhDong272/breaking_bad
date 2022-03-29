@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/deaths_provider.dart';
 
 import './characters_screen.dart';
 import './deaths_screen.dart';
@@ -14,6 +17,7 @@ class TabsScreen extends StatefulWidget {
 class _TabsScreenState extends State<TabsScreen> {
   late List<Map<String, dynamic>> _pages;
   int _selectedPageIndex = 0;
+  var _isLoading = false;
 
   @override
   void initState() {
@@ -27,7 +31,7 @@ class _TabsScreenState extends State<TabsScreen> {
         'title': 'Characters',
       },
       {
-        'page': DeathsScreen(),
+        'page': DeathsScreen(_isLoading),
         'title': 'Deaths',
       },
     ];
@@ -39,6 +43,15 @@ class _TabsScreenState extends State<TabsScreen> {
     setState(() {
       _selectedPageIndex = index;
     });
+  }
+
+  void _extractedAllDeaths() async {
+    await Provider.of<DeathsProvider>(context, listen: false).fetchDeaths();
+  }
+
+  void _extractedRandomDeath() async {
+    await Provider.of<DeathsProvider>(context, listen: false)
+        .fetchRandomDeath();
   }
 
   @override
@@ -58,15 +71,32 @@ class _TabsScreenState extends State<TabsScreen> {
             ),
           ),
         ),
+        actions: _pages[_selectedPageIndex]['title'] == 'Deaths'
+            ? [
+                PopupMenuButton(
+                  itemBuilder: (_) => [
+                    PopupMenuItem(
+                      child: Text('Show All Deaths'),
+                      onTap: _extractedAllDeaths,
+                    ),
+                    PopupMenuItem(
+                      child: Text('Show Random Death'),
+                      onTap: _extractedRandomDeath,
+                    ),
+                  ],
+                )
+              ]
+            : null,
       ),
-      body: IndexedStack(
-        index: _selectedPageIndex,
-        children: [
-          QuotesScreen(),
-          CharactersScreen(),
-          DeathsScreen(),
-        ],
-      ),
+      body: _pages[_selectedPageIndex]['page'],
+      // IndexedStack(
+      //   index: _selectedPageIndex,
+      //   children: [
+      //     QuotesScreen(),
+      //     CharactersScreen(),
+      //     DeathsScreen(),
+      //   ],
+      // ),
       bottomNavigationBar: BottomNavigationBar(
         onTap: _selectPage,
         backgroundColor: Theme.of(context).colorScheme.primary,
