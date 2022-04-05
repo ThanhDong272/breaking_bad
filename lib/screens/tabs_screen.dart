@@ -15,34 +15,47 @@ class TabsScreen extends StatefulWidget {
 }
 
 class _TabsScreenState extends State<TabsScreen> {
-  late List<Map<String, dynamic>> _pages;
+  final List<Widget> _pages = [
+    QuotesScreen(),
+    CharactersScreen(),
+    DeathsScreen(),
+  ];
+
+  final List<Map<String, String>> _pagesTitle = [
+    {
+      'title': 'Quotes',
+    },
+    {
+      'title': 'Characters',
+    },
+    {
+      'title': 'Deaths',
+    },
+  ];
+
   int _selectedPageIndex = 0;
-  var _isLoading = false;
+
+  PageController? pageController;
 
   @override
   void initState() {
-    _pages = [
-      {
-        'page': QuotesScreen(),
-        'title': 'Quotes',
-      },
-      {
-        'page': CharactersScreen(),
-        'title': 'Characters',
-      },
-      {
-        'page': DeathsScreen(_isLoading),
-        'title': 'Deaths',
-      },
-    ];
+    pageController = PageController();
 
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    pageController!.dispose();
+
+    super.dispose();
   }
 
   void _selectPage(int index) {
     setState(() {
       _selectedPageIndex = index;
     });
+    pageController!.jumpToPage(index);
   }
 
   void _extractedAllDeaths() async {
@@ -58,7 +71,7 @@ class _TabsScreenState extends State<TabsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(_pages[_selectedPageIndex]['title'] as String),
+        title: Text(_pagesTitle[_selectedPageIndex]['title'] as String),
         flexibleSpace: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -71,7 +84,7 @@ class _TabsScreenState extends State<TabsScreen> {
             ),
           ),
         ),
-        actions: _pages[_selectedPageIndex]['title'] == 'Deaths'
+        actions: _pagesTitle[_selectedPageIndex]['title'] == 'Deaths'
             ? [
                 PopupMenuButton(
                   itemBuilder: (_) => [
@@ -88,15 +101,11 @@ class _TabsScreenState extends State<TabsScreen> {
               ]
             : null,
       ),
-      body: _pages[_selectedPageIndex]['page'],
-      // IndexedStack(
-      //   index: _selectedPageIndex,
-      //   children: [
-      //     QuotesScreen(),
-      //     CharactersScreen(),
-      //     DeathsScreen(),
-      //   ],
-      // ),
+      body: PageView(
+        children: _pages,
+        controller: pageController,
+        onPageChanged: _selectPage,
+      ),
       bottomNavigationBar: BottomNavigationBar(
         onTap: _selectPage,
         backgroundColor: Theme.of(context).colorScheme.primary,

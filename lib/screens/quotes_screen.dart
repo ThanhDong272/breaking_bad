@@ -12,9 +12,13 @@ class QuotesScreen extends StatefulWidget {
   State<QuotesScreen> createState() => _QuotesScreenState();
 }
 
-class _QuotesScreenState extends State<QuotesScreen> {
+class _QuotesScreenState extends State<QuotesScreen>
+    with AutomaticKeepAliveClientMixin {
   var _isInit = true;
   var _isLoading = false;
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void didChangeDependencies() {
