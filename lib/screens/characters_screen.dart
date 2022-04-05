@@ -12,9 +12,13 @@ class CharactersScreen extends StatefulWidget {
   State<CharactersScreen> createState() => _CharactersScreenState();
 }
 
-class _CharactersScreenState extends State<CharactersScreen> {
+class _CharactersScreenState extends State<CharactersScreen>
+    with AutomaticKeepAliveClientMixin {
   var _isInit = true;
   var _isLoading = false;
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void didChangeDependencies() {

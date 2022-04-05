@@ -6,27 +6,30 @@ import '../providers/deaths_provider.dart';
 import '../widgets/death_list.dart';
 
 class DeathsScreen extends StatefulWidget {
-  var isLoading;
-
-  DeathsScreen(this.isLoading);
+  const DeathsScreen({Key? key}) : super(key: key);
 
   @override
   State<DeathsScreen> createState() => _DeathsScreenState();
 }
 
-class _DeathsScreenState extends State<DeathsScreen> {
+class _DeathsScreenState extends State<DeathsScreen>
+    with AutomaticKeepAliveClientMixin {
   var _isInit = true;
+  var isLoading = false;
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void didChangeDependencies() {
     if (_isInit) {
       setState(() {
-        widget.isLoading = true;
+        isLoading = true;
       });
 
       Provider.of<DeathsProvider>(context).fetchDeaths().then((_) {
         setState(() {
-          widget.isLoading = false;
+          isLoading = false;
         });
       });
     }
@@ -37,7 +40,7 @@ class _DeathsScreenState extends State<DeathsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return widget.isLoading
+    return isLoading
         ? Center(
             child: CircularProgressIndicator(
               color: Colors.orange,
