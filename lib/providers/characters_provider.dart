@@ -10,8 +10,20 @@ import '../models/character.dart';
 class CharactersProvider with ChangeNotifier {
   List<Character> _characterItems = [];
 
+  String _searchString = '';
+
   List<Character> get items {
     return [..._characterItems];
+  }
+
+  List<Character> get charItems {
+    return _searchString.isEmpty
+        ? items
+        : items.where((char) {
+            return char.name
+                .toLowerCase()
+                .contains(_searchString.toLowerCase());
+          }).toList();
   }
 
   Future<void> fetchCharacters() async {
@@ -33,6 +45,16 @@ class CharactersProvider with ChangeNotifier {
     } catch (error) {
       throw error;
     }
+  }
+
+  void searchCharacters(String enteredCharacter) {
+    _searchString = enteredCharacter;
+    notifyListeners();
+  }
+
+  void clearSearchCharacters() {
+    _searchString = '';
+    notifyListeners();
   }
 
   void clearCharacters() {
