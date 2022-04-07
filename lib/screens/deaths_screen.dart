@@ -38,6 +38,22 @@ class _DeathsScreenState extends State<DeathsScreen>
     super.didChangeDependencies();
   }
 
+  Future<void> _refreshDeaths() async {
+    final deathProvider = Provider.of<DeathsProvider>(context, listen: false);
+
+    deathProvider.clearDeaths();
+
+    setState(() {
+      isLoading = true;
+    });
+
+    await deathProvider.fetchDeaths().then((_) {
+      setState(() {
+        isLoading = false;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return isLoading
@@ -46,6 +62,9 @@ class _DeathsScreenState extends State<DeathsScreen>
               color: Colors.orange,
             ),
           )
-        : DeathList();
+        : RefreshIndicator(
+            child: DeathList(),
+            onRefresh: _refreshDeaths,
+          );
   }
 }

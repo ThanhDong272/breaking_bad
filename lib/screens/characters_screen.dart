@@ -21,21 +21,40 @@ class _CharactersScreenState extends State<CharactersScreen>
   bool get wantKeepAlive => true;
 
   @override
-  void didChangeDependencies() {
-    if (_isInit) {
-      setState(() {
-        _isLoading = true;
-      });
-      Provider.of<CharactersProvider>(context).fetchCharacters().then((_) {
+  void initState() {
+    setState(() {
+      _isLoading = true;
+    });
+
+    Future.delayed(Duration.zero).then((_) {
+      Provider.of<CharactersProvider>(context, listen: false)
+          .fetchCharacters()
+          .then((_) {
         setState(() {
           _isLoading = false;
         });
       });
-    }
-    _isInit = false;
+    });
 
-    super.didChangeDependencies();
+    super.initState();
   }
+
+  // @override
+  // void didChangeDependencies() {
+  //   if (_isInit) {
+  //     setState(() {
+  //       _isLoading = true;
+  //     });
+  //     Provider.of<CharactersProvider>(context).fetchCharacters().then((_) {
+  //       setState(() {
+  //         _isLoading = false;
+  //       });
+  //     });
+  //   }
+  //   _isInit = false;
+
+  //   super.didChangeDependencies();
+  // }
 
   Future<void> _refreshCharacters(BuildContext context) async {
     final characterProvider =
@@ -43,7 +62,15 @@ class _CharactersScreenState extends State<CharactersScreen>
 
     characterProvider.clearCharacters();
 
-    await characterProvider.fetchCharacters();
+    setState(() {
+      _isLoading = true;
+    });
+
+    await characterProvider.fetchCharacters().then((_) {
+      setState(() {
+        _isLoading = false;
+      });
+    });
   }
 
   @override

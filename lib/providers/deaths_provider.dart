@@ -54,4 +54,9 @@ class DeathsProvider with ChangeNotifier {
       throw error;
     }
   }
+
+  void clearDeaths() {
+    _deathItems = [];
+    notifyListeners();
+  }
 }

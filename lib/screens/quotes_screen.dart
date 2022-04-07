@@ -42,7 +42,15 @@ class _QuotesScreenState extends State<QuotesScreen>
 
     quoteProvider.clearQuotes();
 
-    await quoteProvider.fetchQuotes();
+    setState(() {
+      _isLoading = true;
+    });
+
+    await quoteProvider.fetchQuotes().then((_) {
+      setState(() {
+        _isLoading = false;
+      });
+    });
   }
 
   @override

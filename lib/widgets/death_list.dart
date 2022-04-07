@@ -10,21 +10,23 @@ class DeathList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final deathData = Provider.of<DeathsProvider>(context);
-    final death = deathData.items;
+    // final deathData = Provider.of<DeathsProvider>(context);
+    // final death = deathData.items;
 
-    return ListView(
-      children: death
-          .map((deathItem) => DeathItem(
-                deathItem.deathId,
-                deathItem.death,
-                deathItem.cause,
-                deathItem.responsible,
-                deathItem.lastWords,
-                deathItem.season,
-                deathItem.episode,
-              ))
-          .toList(),
+    return Consumer<DeathsProvider>(
+      builder: (context, deathData, _) => ListView(
+        children: deathData.items
+            .map((deathItem) => DeathItem(
+                  deathItem.deathId,
+                  deathItem.death,
+                  deathItem.cause,
+                  deathItem.responsible,
+                  deathItem.lastWords,
+                  deathItem.season,
+                  deathItem.episode,
+                ))
+            .toList(),
+      ),
     );
   }
 }
