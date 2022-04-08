@@ -10,22 +10,26 @@ class QuoteGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final quotesData = Provider.of<QuotesProvider>(context);
-    final quotes = quotesData.items;
+    // final quotesData = Provider.of<QuotesProvider>(context);
+    // final quotes = quotesData.items;
 
-    return GridView(
-      padding: const EdgeInsets.all(16),
-      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-        maxCrossAxisExtent: 200,
-        childAspectRatio: 1.3,
-        crossAxisSpacing: 20,
-        mainAxisSpacing: 20,
-      ),
-      children: quotes.map((quoteData) => QuoteItem(
-        quoteData.quoteId,
-        quoteData.quote,
-        quoteData.author,
-      )).toList(),
-    ).build(context);
+    return Consumer<QuotesProvider>(
+      builder: (context, quoteData, _) => GridView(
+        padding: const EdgeInsets.all(16),
+        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+          maxCrossAxisExtent: 200,
+          childAspectRatio: 1.3,
+          crossAxisSpacing: 20,
+          mainAxisSpacing: 20,
+        ),
+        children: quoteData.items
+            .map((quoteData) => QuoteItem(
+                  quoteData.quoteId,
+                  quoteData.quote,
+                  quoteData.author,
+                ))
+            .toList(),
+      ).build(context),
+    );
   }
 }
